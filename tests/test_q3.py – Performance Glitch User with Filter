@@ -1,0 +1,35 @@
+import pytest
+from selenium import webdriver
+from pages.login_page import LoginPage
+from pages.inventory_page import InventoryPage
+from pages.cart_page import CartPage
+from pages.checkout_page import CheckoutPage
+import time
+
+@pytest.fixture
+def driver():
+    driver = webdriver.Chrome()
+    driver.get("https://www.saucedemo.com/")
+    yield driver
+    driver.quit()
+
+def test_performance_glitch_user(driver):
+    login = LoginPage(driver)
+    login.login("performance_glitch_user", "secret_sauce")
+
+    inventory = InventoryPage(driver)
+    inventory.reset_app_state()
+    inventory.filter_products("Name (Z to A)")
+    inventory.add_first_product_to_cart()
+    inventory.go_to_cart()
+
+    cart = CartPage(driver)
+    cart.go_to_checkout()
+
+    checkout = CheckoutPage(driver)
+    checkout.fill_info()
+    checkout.finish_checkout()
+    assert "THANK YOU FOR YOUR ORDER" in checkout.get_success_message().upper()
+
+    inventory.reset_app_state()
+    inventory.logout()
