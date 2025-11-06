@@ -1,0 +1,12 @@
+saucedemo-tests/
+├── pages/
+│   ├── login_page.py
+│   ├── inventory_page.py
+│   ├── cart_page.py
+│   └── checkout_page.py
+├── tests/
+│   ├── test_q1.py
+│   ├── test_q2.py
+│   └── test_q3.py
+├── requirements.txt
+└── README.md
